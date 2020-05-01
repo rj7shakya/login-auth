@@ -11,6 +11,14 @@ const AuthContext = () => {
     error: null,
   });
 
+  setUser({
+    token: localStorage.getItem("token"),
+    isAuthenticated: null,
+    loading: true,
+    user: null,
+    error: null,
+  });
+
   return (
     <AuthContext.Provider
       value={{
