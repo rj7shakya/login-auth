@@ -26,7 +26,6 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    console.log(req.body);
     const { name, email, password } = req.body;
 
     try {
@@ -35,13 +34,17 @@ router.post(
         return res.status(400).send({ msg: "User already exists!" });
       }
       user = new User({ name, email, password });
-      res.json(user);
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
       await user.save();
+
+      jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      });
     } catch (err) {
       res.status(500).send("Server error");
     }
-
-    res.json("Signup here");
   }
 );
 
