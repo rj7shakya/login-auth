@@ -22,8 +22,11 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (password === "" || email === "") {
       console.log("please enter all fields ");
+    } else if (!re.test(email)) {
+      console.log("please enter a valid email");
     } else {
       loginUser({
         email,
@@ -33,12 +36,12 @@ const Login = () => {
   };
 
   return (
-    <div className="form">
+    <div className="form-container">
       <h1>Login a user</h1>
       <form action="" onSubmit={onSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" value={email} onChange={onChange} />
+          <input type="text" name="email" value={email} onChange={onChange} />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
@@ -47,11 +50,13 @@ const Login = () => {
             name="password"
             value={password}
             onChange={onChange}
-            required
-            minLength="6"
           />
         </div>
-        <input type="submit" value="Login" />
+        <input
+          type="submit"
+          value="Login"
+          className="btn btn-primary btn-block"
+        />
       </form>
     </div>
   );

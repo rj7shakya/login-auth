@@ -24,10 +24,13 @@ const Signup = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (name === "" || password === "" || email === "") {
       console.log("please enter all fields ");
     } else if (password !== password2) {
       console.log("password do not match");
+    } else if (!re.test(email)) {
+      console.log("please enter a valid email");
     } else {
       signup({
         name,
@@ -38,7 +41,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="form">
+    <div className="form-container">
       <h1>Register a user</h1>
       <form action="" onSubmit={onSubmit}>
         <div className="form-group">
@@ -47,7 +50,7 @@ const Signup = () => {
         </div>
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" value={email} onChange={onChange} />
+          <input type="text" name="email" value={email} onChange={onChange} />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
@@ -56,8 +59,6 @@ const Signup = () => {
             name="password"
             value={password}
             onChange={onChange}
-            required
-            minLength="6"
           />
         </div>
         <div className="form-group">
@@ -67,11 +68,20 @@ const Signup = () => {
             name="password2"
             value={password2}
             onChange={onChange}
-            required
-            minLength="6"
           />
         </div>
-        <input type="submit" value="signup" />
+        <input
+          type="submit"
+          value="signup"
+          className="btn btn-primary btn-block"
+        />
+        <div className="or">Or </div>
+        <button className="btn btn-primary btn-block p-2">
+          Sign up with google
+        </button>
+        <button className="btn btn-primary btn-block">
+          Sign up with facebook
+        </button>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import authReducer from "./authReducer";
 import AuthContext from "./authContext";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 import {
@@ -35,13 +36,19 @@ const AuthState = (props) => {
       },
     };
     try {
-      const res = await axios.post("api/users", form, config);
+      const res = await axios.post("api/usersdf", form, config);
       dispatch({ type: SIGNUP_SUCCESS, payload: res.data });
     } catch (err) {
       dispatch({
         type: SIGNUP_FAIL,
         payload: err.response.data.msg,
       });
+      if (err) {
+        console.log("server error");
+        toast.success("Server error", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
     }
   };
   //login
@@ -60,6 +67,9 @@ const AuthState = (props) => {
         type: LOGIN_FAIL,
         payload: err.response.data.msg,
       });
+      if (err) {
+        console.log("server error");
+      }
     }
   };
 

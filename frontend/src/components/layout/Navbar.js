@@ -9,7 +9,7 @@ const Navbar = ({ title }) => {
   const { isAuthenticated, logoutUser, user } = authContext;
 
   return (
-    <div className="navbar">
+    <div className="navbar ">
       <h1>{title}</h1>
       <ul>
         <li>
