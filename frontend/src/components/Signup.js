@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 const Signup = () => {
+  const authContext = useContext(AuthContext);
+  const { register, error, isAuthenticated } = authContext;
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -24,7 +28,7 @@ const Signup = () => {
     } else if (password !== password2) {
       console.log("password do not match");
     } else {
-      console.log(user);
+      signup({ name, email, password });
     }
   };
 

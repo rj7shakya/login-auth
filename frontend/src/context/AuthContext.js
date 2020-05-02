@@ -1,37 +1,54 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
+import { SIGNUP_SUCCESS } from "./actions";
 
-export const UserContext = React.createContext();
+export const UserContext = createContext();
 
 const AuthContext = () => {
-  const [uState, setuState] = useState({
-    token: localStorage.getItem(""),
-    isAuthenticated: null,
-    loading: true,
-    user: null,
-    error: null,
-  });
-
-  setUser({
+  const initialState = {
     token: localStorage.getItem("token"),
     isAuthenticated: null,
     loading: true,
     user: null,
     error: null,
-  });
+  };
+
+  const [state, dispatch] = useReducer(authReducer, initialState);
+
+  //load user
+
+  //signup user
+  const signup = async (form) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post("api/users", form, config);
+      dispatch({ type: SIGNUP_SUCCESS, payload: res.data });
+    } catch (err) {
+      dispatch({
+        type: SIGNUP_FAIL,
+        payload: err.response.data.msg,
+      });
+    }
+  };
+  //login
+
+  //logout
 
   return (
     <AuthContext.Provider
       value={{
-        token: uState.token,
-        isAuthenticated: uState.isAuthenticated,
-        loading: uState.loading,
-        user: uState.user,
-        error: uState.error,
-        register,
-        loadUser,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
+        loading: state.loading,
+        user: state.user,
+        error: state.error,
+        signup,
         loginUser,
         logoutUser,
-        clearErrors,
+        loadUser,
       }}
     >
       {props.children}
