@@ -36,16 +36,22 @@ const AuthState = (props) => {
       },
     };
     try {
-      const res = await axios.post("api/usersdf", form, config);
+      const res = await axios.post("api/users", form, config);
       dispatch({ type: SIGNUP_SUCCESS, payload: res.data });
+      toast.success("signup success", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } catch (err) {
       dispatch({
         type: SIGNUP_FAIL,
         payload: err.response.data.msg,
       });
-      if (err) {
-        console.log("server error");
-        toast.success("Server error", {
+      if (err.response.data.msg === "User already exists!") {
+        toast.error(err.response.data.msg, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      } else {
+        toast.error("Server error", {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
       }
@@ -62,13 +68,22 @@ const AuthState = (props) => {
       console.log(form);
       const res = await axios.post("api/auth", form, config);
       dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+      toast.success("login success", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } catch (err) {
       dispatch({
         type: LOGIN_FAIL,
         payload: err.response.data.msg,
       });
-      if (err) {
-        console.log("server error");
+      if (err.response.data.msg === "Invalid credentials") {
+        toast.error(err.response.data.msg, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      } else {
+        toast.error("Server error", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
       }
     }
   };

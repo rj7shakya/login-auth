@@ -14,6 +14,10 @@ ul {
   list-style: none;
 }
 
+* {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
 /* navbar */
 .navbar {
   display: flex;
@@ -124,6 +128,7 @@ button {
   width: 100%;
 }
 
+/* xtra */
 .or {
   width: 100%;
   text-align: center;
@@ -131,4 +136,17 @@ button {
 
 .p-2 {
   margin: 0.5rem 0;
+}
+
+.l1 {
+  margin-left: 1rem;
+}
+
+.dont {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.m1 {
+  margin: 1rem;
 }

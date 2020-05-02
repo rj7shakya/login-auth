@@ -1,10 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import AuthContext from "../context/authContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Login = () => {
+const Login = (props) => {
   const authContext = useContext(AuthContext);
   // eslint-disable-next-line
   const { loginUser, error, isAuthenticated } = authContext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/");
+    }
+  }, [isAuthenticated]);
 
   const [user, setUser] = useState({
     email: "",
@@ -24,9 +33,13 @@ const Login = () => {
     e.preventDefault();
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (password === "" || email === "") {
-      console.log("please enter all fields ");
+      toast.error("please enter all fields ", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else if (!re.test(email)) {
-      console.log("please enter a valid email");
+      toast.error("please enter a valid email", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else {
       loginUser({
         email,
@@ -58,6 +71,18 @@ const Login = () => {
           className="btn btn-primary btn-block"
         />
       </form>
+      <div className="or">Or </div>
+      <div className="dont">
+        Dont have an account{" "}
+        <Link className="l1" to="/">
+          Signup
+        </Link>
+      </div>
+      <div className="or m1">
+        <a className="or" href="">
+          forget password
+        </a>
+      </div>
     </div>
   );
 };

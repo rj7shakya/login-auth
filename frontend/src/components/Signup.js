@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/authContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Signup = () => {
+const Signup = (props) => {
   const authContext = useContext(AuthContext);
-  // eslint-disable-next-line
-  const { signup, error, isAuthenticated } = authContext;
+  const { signup, isAuthenticated } = authContext;
 
   const [user, setUser] = useState({
     name: "",
@@ -12,6 +13,12 @@ const Signup = () => {
     password: "",
     password2: "",
   });
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/login");
+    }
+  }, [isAuthenticated]);
 
   const { name, email, password, password2 } = user;
 
@@ -24,13 +31,20 @@ const Signup = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (name === "" || password === "" || email === "") {
-      console.log("please enter all fields ");
+      toast.error("please enter all fields ", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else if (password !== password2) {
-      console.log("password do not match");
+      toast.error("password do not match", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else if (!re.test(email)) {
-      console.log("please enter a valid email");
+      toast.error("please enter a valid email", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else {
       signup({
         name,
