@@ -32,11 +32,23 @@ export default (state, action) => {
 
     case LOGIN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
-      return {};
+      return {
+        ...state,
+        ...action.payload,
+        isAuthenticated: true,
+        loading: false,
+      };
 
     case LOGIN_FAIL:
       localStorage.removeItem("token");
-      return {};
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        loading: false,
+        error: action.payload,
+        user: null,
+      };
 
     case LOGOUT:
       localStorage.removeItem("token");

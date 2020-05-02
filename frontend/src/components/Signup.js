@@ -3,7 +3,7 @@ import AuthContext from "../context/authContext";
 
 const Signup = () => {
   const authContext = useContext(AuthContext);
-
+  // eslint-disable-next-line
   const { signup, error, isAuthenticated } = authContext;
 
   const [user, setUser] = useState({
@@ -29,7 +29,11 @@ const Signup = () => {
     } else if (password !== password2) {
       console.log("password do not match");
     } else {
-      signup({ name, email, password });
+      signup({
+        name,
+        email,
+        password,
+      });
     }
   };
 
