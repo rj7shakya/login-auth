@@ -1,9 +1,19 @@
-import { createContext, useReducer } from "react";
-import { SIGNUP_SUCCESS } from "./actions";
+import React, { createContext, useReducer } from "react";
+import authReducer from "./authReducer";
+import AuthContext from "./authContext";
+import axios from "axios";
 
-export const UserContext = createContext();
+import {
+  SIGNUP_SUCCESS,
+  SIGNUP_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+} from "./actions";
 
-const AuthContext = () => {
+const AuthState = (props) => {
   const initialState = {
     token: localStorage.getItem("token"),
     isAuthenticated: null,
@@ -15,6 +25,7 @@ const AuthContext = () => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   //load user
+  const loadUser = () => {};
 
   //signup user
   const signup = async (form) => {
@@ -34,8 +45,10 @@ const AuthContext = () => {
     }
   };
   //login
+  const loginUser = () => {};
 
   //logout
+  const logoutUser = () => {};
 
   return (
     <AuthContext.Provider
@@ -56,4 +69,4 @@ const AuthContext = () => {
   );
 };
 
-export default AuthContext;
+export default AuthState;
