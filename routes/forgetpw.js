@@ -7,9 +7,7 @@ const config = require("config");
 const { check, validationResult } = require("express-validator");
 const auth = require("../middleware/auth");
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(
-  "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"
-);
+sgMail.setApiKey(config.get("SENDGRID_APY_KEY"));
 
 router.put(
   "/",
@@ -23,37 +21,37 @@ router.put(
     }
     const { email } = req.body;
     try {
-      let user = await User.findOne({ email });
+      user = await User.findOne({ email });
     } catch (err) {
-      return res.status(400).sen("Email doesnt exist");
+      return res.status(400).send("Email doesnt exist");
     }
 
-    jwt.sign({ id: user.id }, config.get("jwtSecretpw"), (err, token) => {
-      if (err) throw err;
-      res.json({ token });
-
-      const emailData = {
-        from: "shakyaraj@gmail.com",
-        to: email,
-        subject: `Password reset link`,
-        html: `
-        <h1>Please use the following link to reset the password</h1>
-        <p>${config.get("CLIENT_URL")}/auth/reset/${token}</p>
-        `,
-      };
-
-      try {
-        User.updateOne({ resetPasswordLink: token });
-      } catch (err) {
-        return res.status(400).sen("Database error");
+    jwt.sign({ _id: user._id }, config.get("jwtSecretpw"), (err, token) => {
+      if (err) {
+        throw err;
       }
+      // res.json({ token });
 
-      try {
-        sgMail.send(emailData);
-      } catch (error) {
-        return res.send(error.message);
-      }
-      res.json({ msg: "email has been sent" });
+      // const emailData = {
+      //   from: "shakyarajad1@gmail.com",
+      //   to: email,
+      //   subject: `Password reset link`,
+      //   html: `
+      //   <h1>Please use the following link to reset the password</h1>
+      //   <p>${config.get("CLIENT_URL")}/auth/reset/${token}</p>
+      //   `,
+      // };
+      const url = config.get("CLIENT_URL") + "/auth/reset/" + token;
+      res.json({ url });
+      // sgMail
+      //   .send(emailData)
+      //   .then((sent) => {
+      //     return res.json({ msg: "email has been sent" });
+      //   })
+      //   .catch((err) => {
+      //     console.log("error");
+      //     return res.send(err.message);
+      //   });
     });
   }
 );
