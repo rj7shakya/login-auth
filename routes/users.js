@@ -73,9 +73,4 @@ router.put("/:id", auth, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-
-// router.put("update/:id", async (req, res) => {
-//   res.json("update");
-// });
-
 module.exports = router;

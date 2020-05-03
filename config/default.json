@@ -1,4 +1,6 @@
 {
   "mongoURI": "mongodb://localhost:27017/login",
-  "jwtSecret": "loginsecret"
+  "jwtSecret": "loginsecret",
+  "jwtSecretpw": "resetsecret",
+  "CLIENT_URL": "http://localhost:3000"
 }

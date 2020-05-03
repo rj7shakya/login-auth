@@ -86,7 +86,7 @@ const Signup = (props) => {
         </div>
         <input
           type="submit"
-          value="signup"
+          value="Signup"
           className="btn btn-primary btn-block"
         />
         <div className="or">Or </div>

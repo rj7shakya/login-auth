@@ -61,7 +61,6 @@ const AuthState = (props) => {
       },
     };
     try {
-      console.log(user._id);
       const res = await axios.put(`api/users/${user._id}`, user, config);
       dispatch({ type: UPDATE_SUCCESS, payload: res.data });
       toast.success("update success", {
@@ -136,15 +135,15 @@ const AuthState = (props) => {
         type: LOGIN_FAIL,
         payload: err.response,
       });
-      // if (err.response.data.msg === "Invalid credentials") {
-      //   toast.error(err.response.data.msg, {
-      //     position: toast.POSITION.BOTTOM_RIGHT,
-      //   });
-      // } else {
-      //   toast.error("Server error", {
-      //     position: toast.POSITION.BOTTOM_RIGHT,
-      //   });
-      // }
+      if (err.response.data.msg === "Invalid credentials") {
+        toast.error(err.response.data.msg, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      } else {
+        toast.error("Server error", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
     }
   };
 

@@ -31,7 +31,6 @@ const Home = (props) => {
   }, [isAuthenticated, props.history]);
 
   useEffect(() => {
-    console.log(u);
     u && (user.name = u.name);
     u && (user.email = u.email);
   }, [u]);
