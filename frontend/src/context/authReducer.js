@@ -52,7 +52,14 @@ export default (state, action) => {
 
     case LOGOUT:
       localStorage.removeItem("token");
-      return {};
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        loading: false,
+        error: action.payload,
+        user: null,
+      };
 
     case USER_LOADED:
       return {};

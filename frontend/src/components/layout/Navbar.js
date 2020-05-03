@@ -5,7 +5,11 @@ import AuthContext from "../../context/authContext";
 const Navbar = ({ title }) => {
   const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, logoutUser, user } = authContext;
+  const { isAuthenticated, logoutUser, user, logoutUser } = authContext;
+
+  const onLogout = () => {
+    logoutUser();
+  };
 
   return (
     <div className="navbar ">
@@ -15,9 +19,9 @@ const Navbar = ({ title }) => {
           <li>
             <Link to="/home">Home</Link>
           </li>
-          <li>
-            <Link to="/logout">Logut</Link>
-          </li>
+          <a onClick={onLogout} href="#!">
+            <span className="hide-sm">Logout</span>
+          </a>
         </ul>
       ) : (
         <ul>

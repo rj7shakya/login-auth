@@ -65,7 +65,6 @@ const AuthState = (props) => {
       },
     };
     try {
-      console.log(form);
       const res = await axios.post("api/auth", form, config);
       dispatch({ type: LOGIN_SUCCESS, payload: res.data });
       toast.success("login success", {
@@ -89,7 +88,7 @@ const AuthState = (props) => {
   };
 
   //logout
-  const logoutUser = () => {};
+  const logoutUser = () => dispatch({ type: LOGOUT });
 
   return (
     <AuthContext.Provider
