@@ -18,7 +18,7 @@ const Signup = (props) => {
     if (isAuthenticated) {
       props.history.push("/login");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, props.history]);
 
   const { name, email, password, password2 } = user;
 

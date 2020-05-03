@@ -9,16 +9,17 @@ const Login = (props) => {
   // eslint-disable-next-line
   const { loginUser, error, isAuthenticated } = authContext;
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      props.history.push("/");
-    }
-  }, [isAuthenticated]);
-
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/home");
+    } else {
+      props.history.push("/login");
+    }
+  }, [isAuthenticated]);
 
   const { email, password } = user;
 
@@ -45,6 +46,10 @@ const Login = (props) => {
         email,
         password,
       });
+      console.log(isAuthenticated);
+      if (isAuthenticated) {
+        props.history.push("/");
+      }
     }
   };
 

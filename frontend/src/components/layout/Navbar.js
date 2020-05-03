@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/authContext";
 
-const Navbar = ({ title }) => {
+const Navbar = (props) => {
   const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, logoutUser, user, logoutUser } = authContext;
+  const { isAuthenticated, logoutUser, user } = authContext;
 
   const onLogout = () => {
     logoutUser();
@@ -13,7 +13,7 @@ const Navbar = ({ title }) => {
 
   return (
     <div className="navbar ">
-      <h1>{title}</h1>
+      <h1>{props.title}</h1>
       {isAuthenticated ? (
         <ul>
           <li>
