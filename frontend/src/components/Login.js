@@ -46,7 +46,6 @@ const Login = (props) => {
         email,
         password,
       });
-      console.log(isAuthenticated);
       if (isAuthenticated) {
         props.history.push("/");
       }

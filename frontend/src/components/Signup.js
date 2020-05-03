@@ -16,7 +16,7 @@ const Signup = (props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      props.history.push("/login");
+      props.history.push("/home");
     }
   }, [isAuthenticated, props.history]);
 

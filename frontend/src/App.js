@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import { toast } from "react-toastify";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import setAuthToken from "./xtra/setAuthToken";
 
 import "./App.css";
 import AuthState from "./context/AuthState";
@@ -14,6 +15,10 @@ import {
   Redirect,
 } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
+console.log(localStorage.token);
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 toast.configure();
 

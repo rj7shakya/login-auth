@@ -3,6 +3,7 @@ import authReducer from "./authReducer";
 import AuthContext from "./authContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+import setAuthToken from "../xtra/setAuthToken";
 
 import {
   SIGNUP_SUCCESS,
@@ -12,6 +13,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  UPDATE_SUCCESS,
+  UPDATE_FAIL,
 } from "./actions";
 
 const AuthState = (props) => {
@@ -26,7 +29,52 @@ const AuthState = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   //load user
-  const loadUser = () => {};
+  const loadUser = async () => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    try {
+      const res = await axios.get("/api/auth");
+      dispatch({ type: USER_LOADED, payload: res.data });
+    } catch (error) {
+      dispatch({ type: AUTH_ERROR });
+    }
+  };
+
+  //update user
+  const updateUser = async (user) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post(
+        `api/users/update/${user._id}`,
+        user,
+        config
+      );
+      dispatch({ type: UPDATE_SUCCESS, payload: res.data });
+      toast.success("update success", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      loadUser();
+    } catch (err) {
+      dispatch({
+        type: UPDATE_FAIL,
+        payload: err.response.data.msg,
+      });
+      if (err.response.data.msg === "Not authorized") {
+        toast.error(err.response.data.msg, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      } else {
+        toast.error("Server error", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
+    }
+  };
 
   //signup user
   const signup = async (form) => {
@@ -38,14 +86,17 @@ const AuthState = (props) => {
     try {
       const res = await axios.post("api/users", form, config);
       dispatch({ type: SIGNUP_SUCCESS, payload: res.data });
-      toast.success("signup success", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
+      // toast.success("signup success", {
+      //   position: toast.POSITION.BOTTOM_RIGHT,
+      // });
+      // loadUser();
+      // return;
     } catch (err) {
       dispatch({
         type: SIGNUP_FAIL,
-        payload: err.response.data.msg,
+        payload: err.response,
       });
+      console.log(err.response);
       if (err.response.data.msg === "User already exists!") {
         toast.error(err.response.data.msg, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -70,6 +121,7 @@ const AuthState = (props) => {
       toast.success("login success", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
+      loadUser();
     } catch (err) {
       dispatch({
         type: LOGIN_FAIL,
@@ -102,6 +154,7 @@ const AuthState = (props) => {
         loginUser,
         logoutUser,
         loadUser,
+        updateUser,
       }}
     >
       {props.children}

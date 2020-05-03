@@ -48,4 +48,28 @@ router.post(
   }
 );
 
+// route PUT  api/users/update/:id
+// desc  update user
+// access  private
+router.put("update/:id", async (req, res) => {
+  const { name, email } = req.body;
+  const userFields = {};
+  if (name) userFields.name = name;
+  if (email) userFields.email = email;
+
+  try {
+    let user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ msg: "Not authorized" });
+    contact = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: userFields },
+      { new: true }
+    );
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router;

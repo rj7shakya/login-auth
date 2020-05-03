@@ -17,7 +17,7 @@ const Navbar = (props) => {
       {isAuthenticated ? (
         <ul>
           <li>
-            <Link to="/home">Home</Link>
+            <Link to="/home">Home </Link>
           </li>
           <a onClick={onLogout} href="#!">
             <span className="hide-sm">Logout</span>
