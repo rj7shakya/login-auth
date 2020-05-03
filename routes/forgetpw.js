@@ -41,6 +41,12 @@ router.put(
       //   <p>${config.get("CLIENT_URL")}/auth/reset/${token}</p>
       //   `,
       // };
+      User.updateOne({ resetPasswordLink: token }, (err, success) => {
+        if (err) {
+          return res.status(400).json({ error: "db error" });
+        }
+      });
+
       const url = config.get("CLIENT_URL") + "/auth/reset/" + token;
       res.json({ url });
       // sgMail

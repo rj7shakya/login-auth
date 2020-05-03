@@ -9,19 +9,19 @@ const Login = (props) => {
   // eslint-disable-next-line
   const { loginUser, error, isAuthenticated } = authContext;
 
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
-  useEffect(() => {
-    if (isAuthenticated) {
-      props.history.push("/home");
-    } else {
-      props.history.push("/login");
-    }
-  }, [isAuthenticated]);
+  // const [user, setUser] = useState({
+  //   email: "",
+  //   password: "",
+  // });
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     props.history.push("/home");
+  //   } else {
+  //     props.history.push("/login");
+  //   }
+  // }, [isAuthenticated]);
 
-  const { email, password } = user;
+  // const { email, password } = user;
 
   const onChange = (e) => {
     setUser({
@@ -32,8 +32,9 @@ const Login = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (password === "") {
-      toast.error("please enter the password field", {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(email)) {
+      toast.error("please enter a valid email", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
@@ -49,20 +50,15 @@ const Login = (props) => {
 
   return (
     <div className="form-container">
-      <h1>Reset password</h1>
+      <h1>Forget password?</h1>
       <form action="" onSubmit={onSubmit}>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={onChange}
-          />
+          <label htmlFor="email">Email</label>
+          <input type="text" name="email" value={email} onChange={onChange} />
         </div>
         <input
           type="submit"
-          value="Reset password"
+          value="Get Link"
           className="btn btn-primary btn-block"
         />
       </form>

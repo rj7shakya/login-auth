@@ -8,17 +8,16 @@ const { check, validationResult } = require("express-validator");
 const auth = require("../middleware/auth");
 const _ = require("lodash");
 
-router.post(
+router.put(
   "/",
   [
     check(
-      "password",
+      "newPassword",
       "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -32,9 +31,9 @@ router.post(
         if (err) {
           return res.status(400).json({ error: "link error" });
         }
-        User.findById({ resetPasswordLink }, (err, user) => {
-          if (error || !user) {
-            res.status(400).json({
+        User.findOne({ resetPasswordLink }, (err, user) => {
+          if (err) {
+            return res.status(400).json({
               error: "smthg went wrong",
             });
           }
@@ -45,7 +44,7 @@ router.post(
           };
           user = _.extend(user, updatedFields);
           user.save((err, result) => {
-            if (err) {
+            if (err || !user) {
               return res.status(400).json({ error: "error resetting" });
             }
             res.json({
