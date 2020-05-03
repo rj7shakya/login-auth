@@ -8,6 +8,8 @@ import setAuthToken from "./xtra/setAuthToken";
 
 import "./App.css";
 import AuthState from "./context/AuthState";
+import Forget from "./components/Forget";
+import Reset from "./components/Reset";
 import {
   BrowserRouter as Router,
   Route,
@@ -33,6 +35,8 @@ function App() {
               <PrivateRoute exact path="/home" component={Home} />
               <Route exact path="/" component={Signup} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/forget" component={Forget} />
+              <Route exact path="/reset" component={Reset} />
               {/* <Route exact path='/' component={}/> */}
               <Redirect to="/" />
             </Switch>

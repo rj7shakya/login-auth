@@ -7,12 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 const Login = (props) => {
   const authContext = useContext(AuthContext);
   // eslint-disable-next-line
-  const { loginUser, error, isAuthenticated } = authContext;
+  const { forgetpw, isAuthenticated } = authContext;
 
-  // const [user, setUser] = useState({
-  //   email: "",
-  //   password: "",
-  // });
+  const [user, setUser] = useState({
+    email: "",
+  });
   // useEffect(() => {
   //   if (isAuthenticated) {
   //     props.history.push("/home");
@@ -21,7 +20,7 @@ const Login = (props) => {
   //   }
   // }, [isAuthenticated]);
 
-  // const { email, password } = user;
+  const { email } = user;
 
   const onChange = (e) => {
     setUser({
@@ -38,13 +37,7 @@ const Login = (props) => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
-      // loginUser({
-      //   email,
-      //   password,
-      // });
-      if (isAuthenticated) {
-        props.history.push("/");
-      }
+      console.log(forgetpw({ email }));
     }
   };
 

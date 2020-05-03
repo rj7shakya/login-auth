@@ -150,6 +150,24 @@ const AuthState = (props) => {
   //logout
   const logoutUser = () => dispatch({ type: LOGOUT });
 
+  //forget password
+  const forgetpw = async ({ email }) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.put("api/forget", email, config);
+    } catch (error) {
+      return "Server error";
+    }
+
+    // return res.data;
+  };
+
+  //reset password
+
   return (
     <AuthContext.Provider
       value={{
@@ -165,6 +183,7 @@ const AuthState = (props) => {
         updateUser,
         setCurrent,
         clearCurrent,
+        forgetpw,
       }}
     >
       {props.children}

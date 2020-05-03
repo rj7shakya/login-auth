@@ -32,15 +32,20 @@ const Login = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (password === "") {
-      toast.error("please enter the password field", {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (password === "" || email === "") {
+      toast.error("please enter all fields ", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else if (!re.test(email)) {
+      toast.error("please enter a valid email", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
-      // loginUser({
-      //   email,
-      //   password,
-      // });
+      loginUser({
+        email,
+        password,
+      });
       if (isAuthenticated) {
         props.history.push("/");
       }
@@ -49,8 +54,12 @@ const Login = (props) => {
 
   return (
     <div className="form-container">
-      <h1>Reset password</h1>
+      <h1>Login a user</h1>
       <form action="" onSubmit={onSubmit}>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input type="text" name="email" value={email} onChange={onChange} />
+        </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -62,10 +71,22 @@ const Login = (props) => {
         </div>
         <input
           type="submit"
-          value="Reset password"
+          value="Login"
           className="btn btn-primary btn-block"
         />
       </form>
+      <div className="or">Or </div>
+      <div className="dont">
+        Dont have an account{" "}
+        <Link className="l1" to="/">
+          Signup
+        </Link>
+      </div>
+      <div className="or m1">
+        <Link to="/forget" className="or">
+          forget password
+        </Link>
+      </div>
     </div>
   );
 };
