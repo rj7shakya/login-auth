@@ -6,7 +6,10 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
 const auth = require("../middleware/auth");
-// const sgMail = require("@sendgrid/mail");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(
+  "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"
+);
 
 router.put(
   "/",
@@ -30,7 +33,7 @@ router.put(
       res.json({ token });
 
       const emailData = {
-        from: "shakyarajad1@gmail.com",
+        from: "shakyaraj@gmail.com",
         to: email,
         subject: `Password reset link`,
         html: `
@@ -40,7 +43,13 @@ router.put(
       };
 
       try {
-        // sgMail.send(emailData);
+        User.updateOne({ resetPasswordLink: token });
+      } catch (err) {
+        return res.status(400).sen("Database error");
+      }
+
+      try {
+        sgMail.send(emailData);
       } catch (error) {
         return res.send(error.message);
       }
