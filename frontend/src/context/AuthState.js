@@ -61,13 +61,13 @@ const AuthState = (props) => {
       },
     };
     try {
-      console.log(user.name);
+      console.log(user._id);
       const res = await axios.put(`api/users/${user._id}`, user, config);
       dispatch({ type: UPDATE_SUCCESS, payload: res.data });
       toast.success("update success", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      loadUser();
+      // loadUser();
     } catch (err) {
       dispatch({
         type: UPDATE_FAIL,
