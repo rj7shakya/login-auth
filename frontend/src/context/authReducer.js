@@ -8,6 +8,8 @@ import {
   LOGOUT,
   UPDATE_SUCCESS,
   UPDATE_FAIL,
+  SET_CURRENT,
+  CLEAR_CURRENT,
 } from "./actions";
 
 export default (state, action) => {
@@ -90,6 +92,18 @@ export default (state, action) => {
     case AUTH_ERROR:
       localStorage.removeItem("token");
       return {};
+
+    case SET_CURRENT:
+      return {
+        ...state,
+        current: action.payload,
+      };
+
+    case CLEAR_CURRENT:
+      return {
+        ...state,
+        current: null,
+      };
 
     default:
       return state;

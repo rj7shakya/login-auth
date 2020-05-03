@@ -13,6 +13,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  SET_CURRENT,
+  CLEAR_CURRENT,
   UPDATE_SUCCESS,
   UPDATE_FAIL,
 } from "./actions";
@@ -41,6 +43,16 @@ const AuthState = (props) => {
     }
   };
 
+  // set current contact
+  const setCurrent = (user) => {
+    dispatch({ type: SET_CURRENT, payload: user });
+  };
+
+  // clear current contact
+  const clearCurrent = (contact) => {
+    dispatch({ type: CLEAR_CURRENT });
+  };
+
   //update user
   const updateUser = async (user) => {
     const config = {
@@ -49,11 +61,8 @@ const AuthState = (props) => {
       },
     };
     try {
-      const res = await axios.post(
-        `api/users/update/${user._id}`,
-        user,
-        config
-      );
+      console.log(user.name);
+      const res = await axios.put(`api/users/${user._id}`, user, config);
       dispatch({ type: UPDATE_SUCCESS, payload: res.data });
       toast.success("update success", {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -86,10 +95,10 @@ const AuthState = (props) => {
     try {
       const res = await axios.post("api/users", form, config);
       dispatch({ type: SIGNUP_SUCCESS, payload: res.data });
-      // toast.success("signup success", {
-      //   position: toast.POSITION.BOTTOM_RIGHT,
-      // });
-      // loadUser();
+      toast.success("signup success", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      loadUser();
       // return;
     } catch (err) {
       dispatch({
@@ -125,17 +134,17 @@ const AuthState = (props) => {
     } catch (err) {
       dispatch({
         type: LOGIN_FAIL,
-        payload: err.response.data.msg,
+        payload: err.response,
       });
-      if (err.response.data.msg === "Invalid credentials") {
-        toast.error(err.response.data.msg, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-      } else {
-        toast.error("Server error", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-      }
+      // if (err.response.data.msg === "Invalid credentials") {
+      //   toast.error(err.response.data.msg, {
+      //     position: toast.POSITION.BOTTOM_RIGHT,
+      //   });
+      // } else {
+      //   toast.error("Server error", {
+      //     position: toast.POSITION.BOTTOM_RIGHT,
+      //   });
+      // }
     }
   };
 
@@ -155,6 +164,8 @@ const AuthState = (props) => {
         logoutUser,
         loadUser,
         updateUser,
+        setCurrent,
+        clearCurrent,
       }}
     >
       {props.children}

@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
+const auth = require("../middleware/auth");
 
 //POST   api/users
 //desc   signup user
@@ -51,7 +52,7 @@ router.post(
 // route PUT  api/users/update/:id
 // desc  update user
 // access  private
-router.put("update/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const { name, email } = req.body;
   const userFields = {};
   if (name) userFields.name = name;
@@ -59,6 +60,7 @@ router.put("update/:id", async (req, res) => {
 
   try {
     let user = await User.findById(req.params.id);
+    // console.log(userFields.name);
     if (!user) return res.status(404).json({ msg: "Not authorized" });
     contact = await User.findByIdAndUpdate(
       req.params.id,
@@ -71,5 +73,9 @@ router.put("update/:id", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+// router.put("update/:id", async (req, res) => {
+//   res.json("update");
+// });
 
 module.exports = router;
