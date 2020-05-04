@@ -12,6 +12,7 @@ import {
   FORGET_PASSWORD,
   RESET_PASSWORD,
   GOOGLE_LOGIN,
+  FACEBOOK_LOGIN,
   CLEAR_CURRENT,
 } from "./actions";
 
@@ -121,6 +122,8 @@ export default (state, action) => {
       };
 
     case GOOGLE_LOGIN:
+      return {};
+    case FACEBOOK_LOGIN:
       return {};
     default:
       return state;

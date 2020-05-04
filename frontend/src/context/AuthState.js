@@ -20,6 +20,7 @@ import {
   RESET_PASSWORD,
   UPDATE_FAIL,
   GOOGLE_LOGIN,
+  FACEBOOK_LOGIN,
 } from "./actions";
 
 const AuthState = (props) => {
@@ -218,6 +219,23 @@ const AuthState = (props) => {
     }
   };
 
+  //facebook login
+  const facebooklogin = async (user) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    try {
+      console.log("sending");
+      const res = await axios.post("api/facebook", user, config);
+      // console.log(res);
+      dispatch({ type: FACEBOOK_LOGIN, payload: res.data });
+    } catch (error) {
+      return "Server error";
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -237,6 +255,7 @@ const AuthState = (props) => {
         forgetpw,
         resetpw,
         googlelogin,
+        facebooklogin,
       }}
     >
       {props.children}
