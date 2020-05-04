@@ -21,7 +21,9 @@ router.put(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { resetPasswordLink, newPassword } = req.body;
+    let { resetPasswordLink, newPassword } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    newPassword = await bcrypt.hash(newPassword, salt);
 
     if (resetPasswordLink) {
       jwt.verify(resetPasswordLink, config.get("jwtSecretpw"), function (
@@ -43,8 +45,10 @@ router.put(
             resetPasswordLink: "",
           };
           user = _.extend(user, updatedFields);
-          user.save((err, result) => {
-            if (err || !user) {
+          var userr = new User(user);
+          userr.save((err, result) => {
+            if (err) {
+              console.log(err);
               return res.status(400).json({ error: "error resetting" });
             }
             res.json({

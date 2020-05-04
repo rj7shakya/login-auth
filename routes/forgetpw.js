@@ -12,7 +12,6 @@ sgMail.setApiKey(config.get("SENDGRID_APY_KEY"));
 router.put(
   "/",
   [check("email", "Please include a valid email").isEmail()],
-  auth,
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -23,6 +22,9 @@ router.put(
     try {
       user = await User.findOne({ email });
     } catch (err) {
+      toast.error("no email found", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
       return res.status(400).send("Email doesnt exist");
     }
 
@@ -48,7 +50,8 @@ router.put(
       });
 
       const url = config.get("CLIENT_URL") + "/auth/reset/" + token;
-      res.json({ url });
+
+      res.json({ url: url });
       // sgMail
       //   .send(emailData)
       //   .then((sent) => {

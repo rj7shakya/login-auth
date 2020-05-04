@@ -9,6 +9,8 @@ import {
   UPDATE_SUCCESS,
   UPDATE_FAIL,
   SET_CURRENT,
+  FORGET_PASSWORD,
+  RESET_PASSWORD,
   CLEAR_CURRENT,
 } from "./actions";
 
@@ -103,6 +105,12 @@ export default (state, action) => {
       return {
         ...state,
         current: null,
+      };
+    case FORGET_PASSWORD:
+      return {
+        ...state,
+        url: action.payload,
+        loading: false,
       };
 
     default:

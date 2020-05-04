@@ -1,61 +1,67 @@
 import React, { useState, useContext, useEffect } from "react";
+import jwt from "jsonwebtoken";
 import AuthContext from "../context/authContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Login = (props) => {
+const Reset = ({ match }) => {
   const authContext = useContext(AuthContext);
   // eslint-disable-next-line
-  const { isAuthenticated } = authContext;
+  const { isAuthenticated, resetpw } = authContext;
 
   const [user, setUser] = useState({
-    email: "",
-    password: "",
+    token: "",
+    newPassword: "",
+    name: "",
   });
   useEffect(() => {
-    if (isAuthenticated) {
-      props.history.push("/home");
-    } else {
-      props.history.push("/login");
+    let token = match.params.token;
+    let { name } = jwt.decode(token);
+    if (token) {
+      setUser({ ...user, name, token });
     }
-  }, [isAuthenticated]);
+  }, []);
 
-  const { email, password } = user;
+  const { token, newPassword, name } = user;
 
   const onChange = (e) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value,
+      newPassword: e.target.value,
     });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (password === "") {
+    if (newPassword === "") {
       toast.error("please enter the password field", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
+    } else if (newPassword.length < 6) {
+      toast.error("password should be 6 character or long", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else {
-      // loginUser({
-      //   email,
-      //   password,
-      // });
-      if (isAuthenticated) {
-        props.history.push("/");
-      }
+      resetpw({
+        newPassword,
+        resetPasswordLink: token,
+      });
+      // if (isAuthenticated) {
+      //   props.history.push("/");
+      // }
     }
   };
 
   return (
     <div className="form-container">
-      <h1>Reset password</h1>
+      <h1>{name} Reset password</h1>
       <form action="" onSubmit={onSubmit}>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
             type="password"
             name="password"
-            value={password}
+            value={newPassword}
             onChange={onChange}
           />
         </div>
@@ -69,4 +75,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default Reset;

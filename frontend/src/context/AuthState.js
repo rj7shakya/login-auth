@@ -16,6 +16,8 @@ import {
   SET_CURRENT,
   CLEAR_CURRENT,
   UPDATE_SUCCESS,
+  FORGET_PASSWORD,
+  RESET_PASSWORD,
   UPDATE_FAIL,
 } from "./actions";
 
@@ -26,6 +28,7 @@ const AuthState = (props) => {
     loading: true,
     user: null,
     error: null,
+    url: null,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -151,22 +154,41 @@ const AuthState = (props) => {
   const logoutUser = () => dispatch({ type: LOGOUT });
 
   //forget password
-  const forgetpw = async ({ email }) => {
+  const forgetpw = async (user) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    try {
+      const res = await axios.put("api/forget", user, config);
+      console.log("sending");
+      // console.log(res);
+      dispatch({ type: FORGET_PASSWORD, payload: res.data });
+    } catch (error) {
+      return "Server error";
+    }
+  };
+
+  //reset password
+  const resetpw = async (user) => {
     const config = {
       headers: {
         "Content-type": "application/json",
       },
     };
     try {
-      const res = await axios.put("api/forget", email, config);
+      const res = await axios.put("api/reset", user, config);
+      // console.log("sending");
+      // console.log(res);
+      dispatch({ type: RESET_PASSWORD, payload: res.data });
     } catch (error) {
       return "Server error";
     }
-
-    // return res.data;
   };
-
-  //reset password
 
   return (
     <AuthContext.Provider
@@ -176,6 +198,7 @@ const AuthState = (props) => {
         loading: state.loading,
         user: state.user,
         error: state.error,
+        url: state.url,
         signup,
         loginUser,
         logoutUser,
@@ -184,6 +207,7 @@ const AuthState = (props) => {
         setCurrent,
         clearCurrent,
         forgetpw,
+        resetpw,
       }}
     >
       {props.children}

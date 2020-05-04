@@ -36,7 +36,7 @@ function App() {
               <Route exact path="/" component={Signup} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/forget" component={Forget} />
-              <Route exact path="/reset" component={Reset} />
+              <Route exact path="/auth/reset/:token" component={Reset} />
               {/* <Route exact path='/' component={}/> */}
               <Redirect to="/" />
             </Switch>
