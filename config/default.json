@@ -3,5 +3,6 @@
   "jwtSecret": "loginsecret",
   "jwtSecretpw": "resetsecret",
   "CLIENT_URL": "http://localhost:3000",
-  "SENDGRID_APY_KEY": "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"
+  "SENDGRID_APY_KEY": "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",
+  "GOOGLE_ID": "564771627032-71t3tfdsivcebjmtgh3evjfnkjgk26q1.apps.googleusercontent.com"
 }

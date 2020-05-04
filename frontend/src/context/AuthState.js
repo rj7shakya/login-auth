@@ -19,6 +19,7 @@ import {
   FORGET_PASSWORD,
   RESET_PASSWORD,
   UPDATE_FAIL,
+  GOOGLE_LOGIN,
 } from "./actions";
 
 const AuthState = (props) => {
@@ -200,6 +201,23 @@ const AuthState = (props) => {
       });
   };
 
+  //google login
+  const googlelogin = async (user) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.put("api/google", user, config);
+      console.log("sending");
+      // console.log(res);
+      dispatch({ type: GOOGLE_LOGIN, payload: res.data });
+    } catch (error) {
+      return "Server error";
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -218,6 +236,7 @@ const AuthState = (props) => {
         clearCurrent,
         forgetpw,
         resetpw,
+        googlelogin,
       }}
     >
       {props.children}

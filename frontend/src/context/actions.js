@@ -12,4 +12,5 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const FORGET_PASSWORD = "FORGET_PASSWORD";
+export const GOOGLE_LOGIN = "GOOGLE_LOGIN";
 export const RESET_PASSWORD = "RESET_PASSWORD";

@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/authContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Google from "./Google";
 
 const Signup = (props) => {
   const authContext = useContext(AuthContext);
@@ -88,16 +89,21 @@ const Signup = (props) => {
         <input
           type="submit"
           value="Signup"
-          className="btn btn-primary btn-block"
+          className="btn btn-primary btn-block "
         />
         <div className="or">Or </div>
-        <button className="btn btn-primary btn-block p-2">
+        {/* <button className="btn btn-primary btn-block p-2">
           Sign up with google
         </button>
-        <button className="btn btn-primary btn-block">
+         */}
+        {/* <div className="btn-block"> */}
+
+        {/* </div> */}
+        <button className="btn btn-primary btn-block p-2 ">
           Sign up with facebook
         </button>
       </form>
+      <Google />
     </div>
   );
 };

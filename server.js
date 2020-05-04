@@ -24,6 +24,7 @@ app.use("/api/auth", require("./routes/auth"));
 //forget reset password
 app.use("/api/forget", require("./routes/forgetpw"));
 app.use("/api/reset", require("./routes/resetpw"));
+app.use("/api/google", require("./routes/google"));
 
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);

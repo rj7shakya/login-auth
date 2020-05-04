@@ -11,6 +11,7 @@ import {
   SET_CURRENT,
   FORGET_PASSWORD,
   RESET_PASSWORD,
+  GOOGLE_LOGIN,
   CLEAR_CURRENT,
 } from "./actions";
 
@@ -118,6 +119,9 @@ export default (state, action) => {
         ...action.payload,
         loading: false,
       };
+
+    case GOOGLE_LOGIN:
+      return {};
     default:
       return state;
   }
