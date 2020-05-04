@@ -45,7 +45,17 @@ const Reset = ({ match }) => {
       resetpw({
         newPassword,
         resetPasswordLink: token,
-      });
+      })
+        .then((res) => {
+          toast.success("password changed ", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+        })
+        .catch((error) => {
+          toast.error(error, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+        });
     }
   };
 
