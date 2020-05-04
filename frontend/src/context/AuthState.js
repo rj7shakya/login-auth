@@ -209,10 +209,10 @@ const AuthState = (props) => {
       },
     };
     try {
-      const res = await axios.put("api/google", user, config);
+      // const res = await axios.put("api/google", user, config);
       console.log("sending");
       // console.log(res);
-      dispatch({ type: GOOGLE_LOGIN, payload: res.data });
+      // dispatch({ type: GOOGLE_LOGIN, payload: res.data });
     } catch (error) {
       return "Server error";
     }
