@@ -8,7 +8,7 @@ const Google = () => {
 
   const responseGoogle = (response) => {
     console.log(response);
-    googlelogin({ idToken: response.tokenId });
+    // googlelogin({ idToken: response.tokenId });
   };
 
   return (
