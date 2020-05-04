@@ -19,7 +19,7 @@ const Login = (props) => {
     } else {
       props.history.push("/login");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, props.history]);
 
   const { email, password } = user;
 
@@ -32,6 +32,7 @@ const Login = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // eslint-disable-next-line
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (password === "" || email === "") {
       toast.error("please enter all fields ", {

@@ -10,7 +10,7 @@ const Home = (props) => {
 
   useEffect(() => {
     authContext.loadUser();
-  }, []);
+  }, [authContext]);
 
   const [user, setUser] = useState({
     name: "",
@@ -29,12 +29,12 @@ const Home = (props) => {
     } else {
       setUser(user);
     }
-  }, [isAuthenticated, props.history]);
+  }, [isAuthenticated, props.history, user]);
 
   useEffect(() => {
     u && (user.name = u.name);
     u && (user.email = u.email);
-  }, [u]);
+  }, [u, user.email, user.name]);
 
   const onChange = (e) => {
     setUser({
@@ -42,10 +42,11 @@ const Home = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-  const { name, email, password } = user;
+  const { name, email } = user;
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // eslint-disable-next-line
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (name === "" || email === "") {
       toast.error("please enter all fields ", {

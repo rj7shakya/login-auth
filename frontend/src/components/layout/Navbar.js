@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/authContext";
 
 const Navbar = (props) => {
   const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, logoutUser, user } = authContext;
+  const { isAuthenticated, logoutUser } = authContext;
 
   const onLogout = () => {
     logoutUser();

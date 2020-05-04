@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { useReducer } from "react";
 import authReducer from "./authReducer";
 import AuthContext from "./authContext";
 import { toast } from "react-toastify";
@@ -177,6 +177,7 @@ const AuthState = (props) => {
 
   //reset password
   const resetpw = async (user) => {
+    // eslint-disable-next-line
     const config = {
       headers: {
         "Content-type": "application/json",

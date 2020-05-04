@@ -8,7 +8,6 @@ const Reset = ({ match, history }) => {
   const authContext = useContext(AuthContext);
   // eslint-disable-next-line
   const { resetpw, newPassword: np } = authContext;
-  let ischange = false;
 
   const [user, setUser] = useState({
     token: "",
@@ -21,12 +20,7 @@ const Reset = ({ match, history }) => {
     if (token) {
       setUser({ ...user, name, token });
     }
-  }, []);
-
-  // useEffect(() => {
-  //   ischange = !ischange;
-  //   history.push("/login");
-  // }, [np]);
+  }, [match.params.token, user]);
 
   const { token, newPassword, name } = user;
 

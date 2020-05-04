@@ -1,8 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import AuthContext from "../context/authContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import setAuthToken from "../xtra/setAuthToken";
 
 const Login = (props) => {
   const authContext = useContext(AuthContext);
@@ -11,11 +10,6 @@ const Login = (props) => {
   const [user, setUser] = useState({
     email: "",
   });
-
-  const [isurl, setisurl] = useState(false);
-  useEffect(() => {
-    setisurl(true);
-  }, [url]);
 
   const { email } = user;
 
@@ -28,6 +22,7 @@ const Login = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // eslint-disable-next-line
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!re.test(email)) {
       toast.error("Invalid email ", {
