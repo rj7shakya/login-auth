@@ -5,10 +5,13 @@ import AuthContext from "../../context/authContext";
 const Navbar = (props) => {
   const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, logoutUser } = authContext;
+  const { isAuthenticated, logoutUser, clearCurrent } = authContext;
 
   const onLogout = () => {
     logoutUser();
+    clearCurrent();
+    localStorage.removeItem("token");
+    // props.history && props.history.push("/login");
   };
 
   return (

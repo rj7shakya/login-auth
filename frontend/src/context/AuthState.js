@@ -57,6 +57,7 @@ const AuthState = (props) => {
 
   // clear current contact
   const clearCurrent = (contact) => {
+    localStorage.removeItem("token");
     dispatch({ type: CLEAR_CURRENT });
   };
 

@@ -107,6 +107,8 @@ export default (state, action) => {
       return {
         ...state,
         current: null,
+        user: null,
+        isAuthenticated: false,
       };
     case FORGET_PASSWORD:
       return {

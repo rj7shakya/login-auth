@@ -1,62 +1,60 @@
-// const { OAuth2Client } = require("google-auth-library");
-// const express = require("express");
-// const router = express.Router();
-// const User = require("../models/User");
-// const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
-// const config = require("config");
-// const { check, validationResult } = require("express-validator");
-// const auth = require("../middleware/auth");
-// const _ = require("lodash");
+const { OAuth2Client } = require("google-auth-library");
+const express = require("express");
+const router = express.Router();
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const { check, validationResult } = require("express-validator");
+const auth = require("../middleware/auth");
+const _ = require("lodash");
 
-// const client = new OAuth2Client(config.get("GOOGLE_ID"));
+const client = new OAuth2Client(config.get("GOOGLE_ID"));
 
-// router.put("/", async (req, res) => {
-//   const { idToken } = req.body;
-//   client.verify;
-//   try {
-//     user = await User.findOne({ email });
-//   } catch (err) {
-//     toast.error("no email found", {
-//       position: toast.POSITION.BOTTOM_RIGHT,
-//     });
-//     return res.status(400).send("Email doesnt exist");
-//   }
+router.put("/", async (req, res) => {
+  const { idToken } = req.body;
+  client
+    .verifyIdToken({ idToken, audience: config.get("GOOGLE_ID") })
+    .then((response) => {
+      const { email_verified, name, emai } = response.payload;
+      if (email_verified) {
+        User.findOne({ email }).exec((err, user) => {
+          if (user) {
+            const token = jwt.sign(
+              { _id: user._id, name },
+              config.get("jwtSecret")
+            );
+            const { _id, email, name } = user;
+            return res.json({
+              token,
+              user: { _id, email, name },
+            });
+          } else {
+            let password = email + config.get("jwtSecret");
+            user = new User({ name, email, password });
+            user.save((err, data) => {
+              if (err) {
+                console.log(err);
+                res.status(400).json({
+                  error: "error to sign with google",
+                });
+              }
+              const token = jwt.sign(
+                { _id: data._id },
+                config.get("jwtSecret")
+              );
+              const { _id, email, name } = data;
+              return res.json({
+                token,
+                user: { _id, email, name },
+              });
+            });
+          }
+        });
+      } else {
+        res.json({ error: "google login failed" });
+      }
+    });
+});
 
-//   jwt.sign({ _id: user._id }, config.get("jwtSecretpw"), (err, token) => {
-//     if (err) {
-//       throw err;
-//     }
-//     // res.json({ token });
-
-//     // const emailData = {
-//     //   from: "shakyarajad1@gmail.com",
-//     //   to: email,
-//     //   subject: `Password reset link`,
-//     //   html: `
-//     //   <h1>Please use the following link to reset the password</h1>
-//     //   <p>${config.get("CLIENT_URL")}/auth/reset/${token}</p>
-//     //   `,
-//     // };
-//     User.updateOne({ resetPasswordLink: token }, (err, success) => {
-//       if (err) {
-//         return res.status(400).json({ error: "db error" });
-//       }
-//     });
-
-//     const url = config.get("CLIENT_URL") + "/auth/reset/" + token;
-
-//     res.json({ url: url });
-//     // sgMail
-//     //   .send(emailData)
-//     //   .then((sent) => {
-//     //     return res.json({ msg: "email has been sent" });
-//     //   })
-//     //   .catch((err) => {
-//     //     console.log("error");
-//     //     return res.send(err.message);
-//     //   });
-//   });
-// });
-
-// module.exports = router;
+module.exports = router;

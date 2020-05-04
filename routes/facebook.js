@@ -8,53 +8,91 @@ const config = require("config");
 const { check, validationResult } = require("express-validator");
 const auth = require("../middleware/auth");
 const _ = require("lodash");
-
-// const client = new OAuth2Client(config.get("GOOGLE_ID"));
+const axios = require("axios");
 
 router.post("/", async (req, res) => {
   const { userID, accessToken } = req.body;
-  console.log(userID);
-  // const url = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name.email&access_token=${accessToken}`;
-  const url = `https://graph.facebook.com/v3.1/me?access_token=${accessToken}`;
-  return fetch(url, {
-    method: "GET",
-  })
-    .then((response) => res.json())
-    .then((response) => {
-      console.log(response);
-      const { email, name } = response;
-      // console.log(email);
-      User.findOne({ email }).exec((err, user) => {
-        if (user) {
-          const token = jwt.sign({ _id: email, name }, config.get("jwtSecret"));
+  const { data } = await axios({
+    url: "https://graph.facebook.com/me",
+    method: "get",
+    params: {
+      fields: ["id", "email", "first_name", "last_name"].join(","),
+      access_token: accessToken,
+    },
+  });
+  const { email, first_name: name } = data;
+  try {
+    const user = await User.findOne({ email });
+    if (user !== null) {
+      const token = jwt.sign(
+        { id: user._id },
+        config.get("jwtSecret"),
+        (err, token) => {
+          if (err) throw err;
+          console.log(user);
+
           const { _id, email, name } = user;
           return res.json({
             token,
             user: { _id, email, name },
           });
-        } else {
-          let password = email + config.get("jwtSecret");
-          user = new User({ name, email, password });
-          user.save((err, data) => {
-            if (err) {
-              console.log(err);
-              res.status(400).json({
-                error: "error to sign with fb",
-              });
-            }
-            const token = jwt.sign({ _id: data._id }, config.get("jwtSecret"));
-            const { _id, email, name } = data;
-            return res.json({
-              token,
-              user: { _id, email, name },
-            });
+        }
+      );
+    } else {
+      let password = email + config.get("jwtSecret");
+      user = new User({ name, email, password });
+      user.save((err, data) => {
+        if (err) {
+          res.json({
+            error: "error to sign with fb",
           });
         }
+        const token = jwt.sign({ _id: data._id }, config.get("jwtSecret"));
+        const { _id, email, name } = data;
+        console.log(data);
+        return res.json({
+          token,
+          user: { _id, email, name },
+        });
       });
-    })
-    .catch((error) => {
-      res.json({ error: "fb login failed" });
-    });
+    }
+  } catch (error) {
+    res.status(400).send("server error");
+  }
+  return data;
+  User.findOne({ email }).then((err, user) => {
+    console.log(user);
+    if (user) {
+      const token = jwt.sign({ _id: email, name }, config.get("jwtSecret"));
+      const { _id, email, name } = user;
+      console.log(user);
+      return res.json({
+        token,
+        user: { _id, email, name },
+      });
+    } else {
+      let password = email + config.get("jwtSecret");
+      user = new User({ name, email, password });
+      user.save((err, data) => {
+        if (err) {
+          res.status(400).json({
+            error: "error to sign with fb",
+          });
+        }
+        const token = jwt.sign({ _id: data._id }, config.get("jwtSecret"));
+        const { _id, email, name } = data;
+        console.log(data);
+        return res.json({
+          token,
+          user: { _id, email, name },
+        });
+      });
+    }
+  });
+  // })
+  // .catch((error) => {
+  //   res.json({ error: "fb login failed" });
+  // });
 });
 
 module.exports = router;

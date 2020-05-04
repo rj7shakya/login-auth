@@ -17,6 +17,8 @@ import {
   Redirect,
 } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
+import Facebook from "./components/Facebook";
+import Google from "./components/Google";
 console.log(localStorage.token);
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -38,6 +40,8 @@ function App() {
               <Route exact path="/forget" component={Forget} />
               <Route exact path="/auth/reset/:token" component={Reset} />
               {/* <Route exact path='/' component={}/> */}
+              <Route exact path="/" component={Google} />
+              <Route exact path="/" component={Facebook} />
               <Redirect to="/" />
             </Switch>
           </div>
