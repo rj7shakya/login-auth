@@ -112,7 +112,12 @@ export default (state, action) => {
         url: action.payload,
         loading: false,
       };
-
+    case RESET_PASSWORD:
+      return {
+        ...state,
+        ...action.payload,
+        loading: false,
+      };
     default:
       return state;
   }

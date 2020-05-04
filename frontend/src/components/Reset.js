@@ -46,9 +46,6 @@ const Reset = ({ match }) => {
         newPassword,
         resetPasswordLink: token,
       });
-      // if (isAuthenticated) {
-      //   props.history.push("/");
-      // }
     }
   };
 

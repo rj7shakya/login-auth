@@ -68,14 +68,7 @@ const Login = (props) => {
       </form>
       <br />
       <br />
-      <span>
-        {" "}
-        {url && (
-          <a onClick={setAuthToken(url.url.substring(33))} href={url.url}>
-            reset url
-          </a>
-        )}{" "}
-      </span>
+      <span> {url && <a href={url.url}>reset url</a>} </span>
     </div>
   );
 };

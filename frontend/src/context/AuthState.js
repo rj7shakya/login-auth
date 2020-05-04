@@ -29,6 +29,8 @@ const AuthState = (props) => {
     user: null,
     error: null,
     url: null,
+    newPassword: null,
+    resetPasswordLink: null,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -180,14 +182,14 @@ const AuthState = (props) => {
         "Content-type": "application/json",
       },
     };
-    try {
-      const res = await axios.put("api/reset", user, config);
-      // console.log("sending");
-      // console.log(res);
-      dispatch({ type: RESET_PASSWORD, payload: res.data });
-    } catch (error) {
-      return "Server error";
-    }
+    axios
+      .put("api/reset", user, config)
+      .then((res) => {
+        console.log("done");
+      })
+      .catch((err) => {
+        console.log("error");
+      });
   };
 
   return (
