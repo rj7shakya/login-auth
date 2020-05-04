@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/authContext";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 const Home = (props) => {
@@ -74,7 +75,7 @@ const Home = (props) => {
           <label htmlFor="email">Email</label>
           <input type="text" name="email" value={email} onChange={onChange} />
         </div>
-        <a href="#"> Update password ? </a>
+        <Link to="/forget">Update password ?</Link>
         <input
           type="submit"
           value="Update profile"

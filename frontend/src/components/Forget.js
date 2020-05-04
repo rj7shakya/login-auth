@@ -7,8 +7,7 @@ import setAuthToken from "../xtra/setAuthToken";
 const Login = (props) => {
   const authContext = useContext(AuthContext);
   // eslint-disable-next-line
-  const { forgetpw, isAuthenticated, url } = authContext;
-  // let loadurl = false;
+  const { forgetpw, url } = authContext;
   const [user, setUser] = useState({
     email: "",
   });
@@ -16,7 +15,6 @@ const Login = (props) => {
   const [isurl, setisurl] = useState(false);
   useEffect(() => {
     setisurl(true);
-    // showurl();
   }, [url]);
 
   const { email } = user;

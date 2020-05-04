@@ -4,10 +4,11 @@ import AuthContext from "../context/authContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Reset = ({ match }) => {
+const Reset = ({ match, history }) => {
   const authContext = useContext(AuthContext);
   // eslint-disable-next-line
-  const { isAuthenticated, resetpw } = authContext;
+  const { resetpw, newPassword: np } = authContext;
+  let ischange = false;
 
   const [user, setUser] = useState({
     token: "",
@@ -21,6 +22,11 @@ const Reset = ({ match }) => {
       setUser({ ...user, name, token });
     }
   }, []);
+
+  // useEffect(() => {
+  //   ischange = !ischange;
+  //   history.push("/login");
+  // }, [np]);
 
   const { token, newPassword, name } = user;
 
@@ -50,6 +56,7 @@ const Reset = ({ match }) => {
           toast.success("password changed ", {
             position: toast.POSITION.BOTTOM_RIGHT,
           });
+          history.push("/login");
         })
         .catch((error) => {
           toast.error(error, {

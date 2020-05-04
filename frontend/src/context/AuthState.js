@@ -182,10 +182,17 @@ const AuthState = (props) => {
         "Content-type": "application/json",
       },
     };
-    axios
-      .put("api/reset", user, config)
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    axios({
+      // .put("api/reset", user, config)
+      method: "PUT",
+      url: "http://localhost:3000/api/reset",
+      data: user,
+    })
       .then((res) => {
-        console.log("done");
+        dispatch({ type: RESET_PASSWORD, payload: res.data });
       })
       .catch((err) => {
         console.log("error");
