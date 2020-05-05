@@ -7,7 +7,7 @@ import Facebook from "./Facebook";
 
 const Signup = (props) => {
   const authContext = useContext(AuthContext);
-  const { signup, isAuthenticated } = authContext;
+  const { signup, isAuthenticated, loginUser } = authContext;
 
   const [user, setUser] = useState({
     name: "",
@@ -54,6 +54,7 @@ const Signup = (props) => {
         email,
         password,
       });
+      loginUser(email, password);
     }
   };
 
@@ -92,12 +93,12 @@ const Signup = (props) => {
           value="Signup"
           className="btn btn-primary btn-block "
         />
-        <div className="or">Or </div>
-        <br />
+        {/* <div className="or">Or </div>
+        <br /> */}
       </form>
-      <Google />
+      {/* <Google />
       <br />
-      <Facebook />
+      <Facebook /> */}
     </div>
   );
 };

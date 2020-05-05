@@ -20,10 +20,10 @@ router.put(
     try {
       user = await User.findOne({ email });
     } catch (err) {
-      toast.error("no email found", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
       return res.status(400).send("Email doesnt exist");
+    }
+    if (user === null) {
+      return res.status(400).json({ msg: "email doesnot exists" });
     }
 
     jwt.sign({ _id: user._id }, config.get("jwtSecretpw"), (err, token) => {

@@ -13,14 +13,12 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  SET_CURRENT,
-  CLEAR_CURRENT,
   UPDATE_SUCCESS,
   FORGET_PASSWORD,
   RESET_PASSWORD,
   UPDATE_FAIL,
-  GOOGLE_LOGIN,
-  FACEBOOK_LOGIN,
+  // GOOGLE_LOGIN,
+  // FACEBOOK_LOGIN,
 } from "./actions";
 
 const AuthState = (props) => {
@@ -48,17 +46,6 @@ const AuthState = (props) => {
     } catch (error) {
       dispatch({ type: AUTH_ERROR });
     }
-  };
-
-  // set current contact
-  const setCurrent = (user) => {
-    dispatch({ type: SET_CURRENT, payload: user });
-  };
-
-  // clear current contact
-  const clearCurrent = (contact) => {
-    localStorage.removeItem("token");
-    dispatch({ type: CLEAR_CURRENT });
   };
 
   //update user
@@ -105,6 +92,7 @@ const AuthState = (props) => {
       toast.success("signup success", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
+
       loadUser();
       // return;
     } catch (err) {
@@ -124,6 +112,7 @@ const AuthState = (props) => {
       }
     }
   };
+
   //login
   const loginUser = async (form) => {
     const config = {
@@ -148,9 +137,6 @@ const AuthState = (props) => {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
       } else {
-        toast.error("Server error", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
       }
     }
   };
@@ -170,10 +156,23 @@ const AuthState = (props) => {
     }
     try {
       const res = await axios.put("api/forget", user, config);
-      console.log("sending");
-      // console.log(res);
       dispatch({ type: FORGET_PASSWORD, payload: res.data });
-    } catch (error) {
+      console.log(res.data.url);
+      if (res.data.url) {
+        toast.success("link sent", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      } else {
+        toast.error("email doesnt exist", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
+    } catch (err) {
+      if (err.response.data.msg === "email doesnot exists") {
+        toast.error(err.response.data.msg, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
       return "Server error";
     }
   };
@@ -204,38 +203,38 @@ const AuthState = (props) => {
   };
 
   //google login
-  const googlelogin = async (user) => {
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
-    try {
-      // const res = await axios.put("api/google", user, config);
-      console.log("sending");
-      // console.log(res);
-      // dispatch({ type: GOOGLE_LOGIN, payload: res.data });
-    } catch (error) {
-      return "Server error";
-    }
-  };
+  // const googlelogin = async (user) => {
+  //   const config = {
+  //     headers: {
+  //       "Content-type": "application/json",
+  //     },
+  //   };
+  //   try {
+  //     // const res = await axios.put("api/google", user, config);
+  //     console.log("sending");
+  //     // console.log(res);
+  //     // dispatch({ type: GOOGLE_LOGIN, payload: res.data });
+  //   } catch (error) {
+  //     return "Server error";
+  //   }
+  // };
 
-  //facebook login
-  const facebooklogin = async (user) => {
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
-    try {
-      console.log("sending");
-      const res = await axios.post("api/facebook", user, config);
-      // console.log(res);
-      dispatch({ type: FACEBOOK_LOGIN, payload: res.data });
-    } catch (error) {
-      return "Server error";
-    }
-  };
+  // //facebook login
+  // const facebooklogin = async (user) => {
+  //   const config = {
+  //     headers: {
+  //       "Content-type": "application/json",
+  //     },
+  //   };
+  //   try {
+  //     console.log("sending");
+  //     const res = await axios.post("api/facebook", user, config);
+  //     // console.log(res);
+  //     dispatch({ type: FACEBOOK_LOGIN, payload: res.data });
+  //   } catch (error) {
+  //     return "Server error";
+  //   }
+  // };
 
   return (
     <AuthContext.Provider
@@ -251,12 +250,10 @@ const AuthState = (props) => {
         logoutUser,
         loadUser,
         updateUser,
-        setCurrent,
-        clearCurrent,
         forgetpw,
         resetpw,
-        googlelogin,
-        facebooklogin,
+        // googlelogin,
+        // facebooklogin,
       }}
     >
       {props.children}

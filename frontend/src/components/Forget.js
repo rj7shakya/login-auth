@@ -30,18 +30,8 @@ const Login = (props) => {
       });
     } else {
       forgetpw({ email })
-        .then((res) => {
-          console.log(url);
-          toast.success("link sent", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          toast.error(error, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          });
-        });
+        .then((res) => {})
+        .catch((error) => {});
     }
   };
 

@@ -8,12 +8,10 @@ import {
   LOGOUT,
   UPDATE_SUCCESS,
   UPDATE_FAIL,
-  SET_CURRENT,
   FORGET_PASSWORD,
   RESET_PASSWORD,
   GOOGLE_LOGIN,
   FACEBOOK_LOGIN,
-  CLEAR_CURRENT,
 } from "./actions";
 
 export default (state, action) => {
@@ -97,19 +95,6 @@ export default (state, action) => {
       localStorage.removeItem("token");
       return {};
 
-    case SET_CURRENT:
-      return {
-        ...state,
-        current: action.payload,
-      };
-
-    case CLEAR_CURRENT:
-      return {
-        ...state,
-        current: null,
-        user: null,
-        isAuthenticated: false,
-      };
     case FORGET_PASSWORD:
       return {
         ...state,

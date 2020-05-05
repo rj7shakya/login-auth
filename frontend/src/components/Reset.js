@@ -20,7 +20,7 @@ const Reset = ({ match, history }) => {
     if (token) {
       setUser({ ...user, name, token });
     }
-  }, [match.params.token, user]);
+  }, [match.params.token]);
 
   const { token, newPassword, name } = user;
 
@@ -42,6 +42,7 @@ const Reset = ({ match, history }) => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
+      console.log("requesting");
       resetpw({
         newPassword,
         resetPasswordLink: token,

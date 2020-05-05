@@ -3,6 +3,7 @@ import AuthContext from "../context/authContext";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import setAuthToken from "../xtra/setAuthToken";
 
 const Home = (props) => {
   const authContext = useContext(AuthContext);
@@ -10,7 +11,15 @@ const Home = (props) => {
 
   useEffect(() => {
     authContext.loadUser();
-  }, [authContext]);
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/home");
+    } else {
+      props.history.push("/login");
+    }
+  }, [isAuthenticated]);
 
   const [user, setUser] = useState({
     name: "",
@@ -29,12 +38,12 @@ const Home = (props) => {
     } else {
       setUser(user);
     }
-  }, [isAuthenticated, props.history, user]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     u && (user.name = u.name);
     u && (user.email = u.email);
-  }, [u, user.email, user.name]);
+  }, [u]);
 
   const onChange = (e) => {
     setUser({
@@ -60,6 +69,9 @@ const Home = (props) => {
       u.name = user.name;
       u.email = user.email;
       updateUser(u);
+      // if (isAuthenticated) {
+      //   props.history.push("/home");
+      // }
     }
   };
 
