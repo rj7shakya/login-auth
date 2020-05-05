@@ -60,16 +60,14 @@ router.put("/:id", auth, async (req, res) => {
 
   try {
     let user = await User.findById(req.params.id);
-    // console.log(userFields.name);
     if (!user) return res.status(404).json({ msg: "Not authorized" });
-    contact = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       req.params.id,
       { $set: userFields },
       { new: true }
     );
     res.json(user);
   } catch (error) {
-    console.error(error.message);
     res.status(500).send("Server error");
   }
 });

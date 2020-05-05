@@ -93,12 +93,12 @@ const Signup = (props) => {
           value="Signup"
           className="btn btn-primary btn-block "
         />
-        {/* <div className="or">Or </div>
-        <br /> */}
+        <div className="or">Or </div>
+        <br />
       </form>
-      {/* <Google />
-      <br />
-      <Facebook /> */}
+      {/* <Google /> */}
+      {/* <br /> */}
+      <Facebook />
     </div>
   );
 };

@@ -22,14 +22,13 @@ router.post("/", async (req, res) => {
   });
   const { email, first_name: name } = data;
   try {
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (user !== null) {
       const token = jwt.sign(
         { id: user._id },
         config.get("jwtSecret"),
         (err, token) => {
           if (err) throw err;
-          console.log(user);
 
           const { _id, email, name } = user;
           return res.json({
@@ -41,6 +40,8 @@ router.post("/", async (req, res) => {
     } else {
       let password = email + config.get("jwtSecret");
       user = new User({ name, email, password });
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
       user.save((err, data) => {
         if (err) {
           res.json({
@@ -49,7 +50,6 @@ router.post("/", async (req, res) => {
         }
         const token = jwt.sign({ _id: data._id }, config.get("jwtSecret"));
         const { _id, email, name } = data;
-        console.log(data);
         return res.json({
           token,
           user: { _id, email, name },
@@ -59,40 +59,6 @@ router.post("/", async (req, res) => {
   } catch (error) {
     res.status(400).send("server error");
   }
-  return data;
-  User.findOne({ email }).then((err, user) => {
-    console.log(user);
-    if (user) {
-      const token = jwt.sign({ _id: email, name }, config.get("jwtSecret"));
-      const { _id, email, name } = user;
-      console.log(user);
-      return res.json({
-        token,
-        user: { _id, email, name },
-      });
-    } else {
-      let password = email + config.get("jwtSecret");
-      user = new User({ name, email, password });
-      user.save((err, data) => {
-        if (err) {
-          res.status(400).json({
-            error: "error to sign with fb",
-          });
-        }
-        const token = jwt.sign({ _id: data._id }, config.get("jwtSecret"));
-        const { _id, email, name } = data;
-        console.log(data);
-        return res.json({
-          token,
-          user: { _id, email, name },
-        });
-      });
-    }
-  });
-  // })
-  // .catch((error) => {
-  //   res.json({ error: "fb login failed" });
-  // });
 });
 
 module.exports = router;

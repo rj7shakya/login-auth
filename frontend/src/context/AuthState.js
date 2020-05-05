@@ -18,7 +18,7 @@ import {
   RESET_PASSWORD,
   UPDATE_FAIL,
   // GOOGLE_LOGIN,
-  // FACEBOOK_LOGIN,
+  FACEBOOK_LOGIN,
 } from "./actions";
 
 const AuthState = (props) => {
@@ -220,21 +220,41 @@ const AuthState = (props) => {
   // };
 
   // //facebook login
-  // const facebooklogin = async (user) => {
-  //   const config = {
-  //     headers: {
-  //       "Content-type": "application/json",
-  //     },
-  //   };
-  //   try {
-  //     console.log("sending");
-  //     const res = await axios.post("api/facebook", user, config);
-  //     // console.log(res);
-  //     dispatch({ type: FACEBOOK_LOGIN, payload: res.data });
-  //   } catch (error) {
-  //     return "Server error";
-  //   }
-  // };
+  const facebooklogin = async (user) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    try {
+      console.log("sending");
+      const res = await axios.post("api/facebook", user, config);
+      console.log(res.data);
+      dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+      toast.success("login success", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      loadUser();
+    } catch (error) {
+      return "Server error";
+    }
+    // axios
+    // .post("api/facebook", user, config)
+    // .then((res) => {
+    // console.log("signing ");
+    //inform parent @todo
+    // console.log(res.data);
+    // setAuthToken(res.data.token);
+    // console.log(loginUser);
+    // loginUser({ email: res.data.user.email, name: res.data.user.name });
+    // if (isAuthenticated) {
+    // props.history.push("/home");
+    // }
+    // })
+    // .catch((e) => {
+    // console.log("error signing in ", e);
+    // });
+  };
 
   return (
     <AuthContext.Provider
@@ -253,7 +273,7 @@ const AuthState = (props) => {
         forgetpw,
         resetpw,
         // googlelogin,
-        // facebooklogin,
+        facebooklogin,
       }}
     >
       {props.children}

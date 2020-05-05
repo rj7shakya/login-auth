@@ -25,14 +25,14 @@ router.put(
     const salt = await bcrypt.genSalt(10);
     newPassword = await bcrypt.hash(newPassword, salt);
     if (resetPasswordLink) {
-      jwt.verify(resetPasswordLink, config.get("jwtSecretpw"), function (
+      jwt.verify(resetPasswordLink, config.get("jwtSecret"), function (
         err,
         decoded
       ) {
         if (err) {
           return res.status(400).json({ error: "link error" });
         }
-        User.findOne({ resetPasswordLink }, (err, user) => {
+        User.findOne({ resetPasswordLink }, async (err, user) => {
           if (err) {
             return res.status(400).json({
               error: "smthg went wrong",
@@ -45,9 +45,9 @@ router.put(
           };
           user = _.extend(user, updatedFields);
           var userr = new User(user);
+          const isMatch = await bcrypt.compare("111111", newPassword);
           userr.save((err, result) => {
             if (err) {
-              console.log(err);
               return res.status(400).json({ error: "error resetting" });
             }
             res.json({

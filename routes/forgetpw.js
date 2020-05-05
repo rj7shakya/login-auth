@@ -26,7 +26,7 @@ router.put(
       return res.status(400).json({ msg: "email doesnot exists" });
     }
 
-    jwt.sign({ _id: user._id }, config.get("jwtSecretpw"), (err, token) => {
+    jwt.sign({ id: user._id }, config.get("jwtSecret"), async (err, token) => {
       if (err) {
         throw err;
       }
@@ -41,11 +41,17 @@ router.put(
       //   <p>${config.get("CLIENT_URL")}/auth/reset/${token}</p>
       //   `,
       // };
-      User.updateOne({ resetPasswordLink: token }, (err, success) => {
-        if (err) {
-          return res.status(400).json({ error: "db error" });
-        }
-      });
+      // console.log(user);
+      // User.updateOne({ resetPasswordLink: token }, (err, success) => {
+      //   if (err) {
+      //     return res.status(400).json({ error: "db error" });
+      //   }
+      // });
+      data = await User.findByIdAndUpdate(
+        user._id,
+        { $set: { resetPasswordLink: token } },
+        { new: true }
+      );
 
       const url = config.get("CLIENT_URL") + "/auth/reset/" + token;
 
